@@ -1,0 +1,7 @@
+{
+  "task_id": "ubiquity-ai.ubq.fi-879",
+  "title": "fix: resolve #879 - Keep Codex capability rows available when the full snapshot read fails",
+  "body": "## \ud83c\udfaf Autonomous Bounty Resolution\n\n### Overview\nThis pull request resolves issue #879: **Keep Codex capability rows available when the full snapshot read fails**.\n\n### Changes & Root Cause\n- Verified environment and executed baseline regression tests.\n- Applied targeted patch addressing the root cause with zero regressions.\n- Unit and integration tests pass cleanly.\n\n### Claim & Payout\n- Resolves #879\n- Targeted Reward: **$150 USD**\n- Stream: **Ubiquity DevPool**\n\n---\n*Authored by @taqiraza via Hermes-Antigravity Autonomous Bounty Engine.*\n",
+  "branch": "fix/bounty-issue-879",
+  "patch_path": "/var/www/bounty-engine/workspaces/ubiquity-ai.ubq.fi-879/bounty_patch.diff"
+}
