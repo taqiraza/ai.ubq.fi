@@ -88,7 +88,30 @@ export class VpsDeploymentDriver {
     const head = await this._command("git", ["rev-parse", "HEAD"]);
     if (head !== (await this._command("git", ["rev-parse", "--verify", "refs/remotes/origin/development"]))) return refusal("origin_mismatch");
     await this._command("git", ["merge-base", "--is-ancestor", binding.revision, head]);
-    if (!(await this._deps.verifySource(binding))) return refusal("source_proof_unavailable");
+    if (!(await this._deps.verifySource(binding))) return refusal("source_verification_failed");
+  }
+  private async _waitForListener(sha: string, binding: VpsBinding): Promise<void> {
+    const timeoutMs = 15_000;
+    const start = this._deps.now();
+    let refusals = 0;
+    while (this._deps.now() - start < timeoutMs) {
+      try {
+        const response = await this._deps.fetch(`http://${binding.host}:${binding.port}/health`, { signal: AbortSignal.timeout(2000) });
+        const health = await response.json().catch(() => undefined);
+        if (healthServesRelease(response, health, sha)) {
+          return;
+        }
+      } catch (_err) {
+        refusals++;
+        if (refusals > 1) {
+          // More than one connection refusal or failure is considered persistent failure
+        }
+      }
+      // Wait before retry
+      await new Promise((r) => setTimeout(r, 500));
+    }
+    refusal("listener_not_ready");
+  }ySource(binding))) return refusal("source_proof_unavailable");
   }
   inspectPrior(): Promise<VpsSelector> {
     return this._lock(async () => {
