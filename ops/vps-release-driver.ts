@@ -21,7 +21,7 @@ import {
   type VpsSelector,
   type VpsSettlement,
 } from "./vps-release-contract.ts";
-import { VpsOperationJournal, withVpsDeployLock } from "./vps-release-journal.ts";
+import { VpsOperationJournal, removeVpsPin, terminalReceipt, withVpsDeployLock } from "./vps-release-journal.ts";
 import { ImmutableVpsReleaseStore, VPS_UNIT_SHA256, type StoredVpsRelease, type VpsCommand } from "./vps-release-store.ts";
 
 export type VpsDriverDependencies = {

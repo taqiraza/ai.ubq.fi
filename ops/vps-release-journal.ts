@@ -11,7 +11,7 @@ async function removeTemporary(path: string): Promise<void> {
     if (!(error instanceof Deno.errors.NotFound)) throw error;
   }
 }
-function terminalReceipt(receipt: VpsReceipt): boolean {
+export function terminalReceipt(receipt: VpsReceipt): boolean {
   if (receipt.phase === "accepted" || receipt.phase === "failed") return true;
   return receipt.phase === "rolled_back" && receipt.settlement !== null;
 }
@@ -35,6 +35,14 @@ export async function readVpsPins(path: string): Promise<VpsPin[]> {
     return pins;
   } catch {
     return unavailable();
+  }
+}
+
+export async function removeVpsPin(path: string, operationId: string): Promise<void> {
+  const pins = await readVpsPins(path);
+  const filtered = pins.filter((pin) => pin.operationId !== operationId);
+  if (filtered.length !== pins.length) {
+    await writeVpsAtomic(path, { schema: 1, pins: filtered });
   }
 }
 
