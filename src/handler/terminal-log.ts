@@ -73,7 +73,7 @@ const logTerminalRequest = async (
     provider: telemetry?.provider ?? input.response.headers.get("x-uos-upstream") ?? "gateway",
     latency_ms: latencyMs,
     admission_wait_ms: input.admissionWaitMs ?? null,
-    admission_stage: input.admissionStage ?? null,
+    admission_stage: input.admissionStage ?? "pre_admission",
     first_provider_dispatch_ms: telemetry?.firstProviderDispatchMs ?? null,
     first_provider_headers_ms: telemetry?.firstProviderHeadersMs ?? null,
     first_codex_dispatch_ms: telemetry?.firstCodexDispatchMs ?? null,

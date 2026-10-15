@@ -54,6 +54,8 @@ function parseEvent(message: string, at: number, identity: VpsIdentity): Event |
   const accepted = match[1] === "accepted",
     status = accepted ? 0 : Number(value.status);
   if (!accepted) validateTerminal(value, status);
+  const admissionStage = parseAdmissionStage(value.admission_stage);
+  if (!accepted && !admissionStage) throw new Error("Missing admission stage in terminal log");
   return {
     id: value.request_id,
     at,
@@ -61,7 +63,7 @@ function parseEvent(message: string, at: number, identity: VpsIdentity): Event |
     status,
     stream: value.stream === true,
     failure: typeof value.failure_kind === "string" ? value.failure_kind : null,
-    admissionStage: accepted ? "accepted" : parseAdmissionStage(value.admission_stage),
+    admissionStage: accepted ? "accepted" : admissionStage,
   };
 }
 function parseAdmissionStage(value: unknown): TerminalAdmissionStage | null {
