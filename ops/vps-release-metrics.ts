@@ -73,6 +73,8 @@ function validateTerminal(value: Record<string, unknown>, status: number): void 
   if (!Number.isInteger(status) || status < 100 || status > 599) return incomplete();
   if (value.stream !== null && typeof value.stream !== "boolean") return incomplete();
   if (value.failure_kind !== null && typeof value.failure_kind !== "string") return incomplete();
+  if (value.rate_limit_wait_ms !== undefined && value.rate_limit_wait_ms !== null && typeof value.rate_limit_wait_ms !== "number") return incomplete();
+  if (value.rate_limit_failover_model !== undefined && value.rate_limit_failover_model !== null && typeof value.rate_limit_failover_model !== "string") return incomplete();
 }
 function journalEvents(raw: string, proof: VpsJournalCoverage, identity: VpsIdentity, start: number, end: number): Event[] {
   if (new TextEncoder().encode(raw).byteLength > MAX_JOURNAL_BYTES) return incomplete();
